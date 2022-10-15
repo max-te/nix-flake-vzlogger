@@ -1,6 +1,6 @@
 {
   description = "Volkszaehler logging utility for various meters & sensors";
-  inputs.nixpkgs.url = "nixpkgs/nixos-21.11";
+  inputs.nixpkgs.url = "nixpkgs/nixos-22.05";
   inputs.libsml-src = {
     type = "github";
     owner = "volkszaehler";
