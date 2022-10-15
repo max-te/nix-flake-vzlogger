@@ -98,7 +98,7 @@
               ExecStart = "${self.packages.${pkgs.system}.default}/bin/vzlogger -f" +
                 " -c ${vzloggerConf}";
               ExecReload = "";
-              StandardOutput = "journal";
+              StandardOutput = "journal+console";
               Restart = "on-failure";
               RestartPreventExitStatus = 78;
               StartLimitIntervalSec = 0;
