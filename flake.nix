@@ -76,15 +76,14 @@
     nixosModules.vzlogger = {config, lib, pkgs, ...}:
       with lib;
       let
-        cfg = config.max-te.services.vzlogger;
+        cfg = config.services.vzlogger;
         settingsFormat = pkgs.formats.json { };
-        
       in {
-        options.max-te.services.vzlogger = {
+        options.services.vzlogger = {
           enable = mkEnableOption "Enables the vzlogger daemon";
           configText = mkOption {
             type = lib.types.submodule { freeformType = settingsFormat.type; };
-            default = "{}";
+            default = { };
             description = lib.mdDoc "Contents of the vzlogger.conf file.";
           };
         };
@@ -96,7 +95,7 @@
             wantedBy = ["multi-user.target"];
             after = ["network.target"];
             serviceConfig = {
-              ExecStart = "${self.packages.${system}.vzlogger}/bin/vzlogger -f" +
+              ExecStart = "${self.packages.${pkgs.system}.default}/bin/vzlogger -f" +
                 " -c ${vzloggerConf}";
               ExecReload = "";
               StandardOutput = "journal";
