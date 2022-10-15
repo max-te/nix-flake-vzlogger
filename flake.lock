@@ -1,0 +1,60 @@
+{
+  "nodes": {
+    "libsml-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1644340481,
+        "narHash": "sha256-+saK98CURCZn7760S54yl0wWoyPFJb6wU0gQ3thnEZw=",
+        "owner": "volkszaehler",
+        "repo": "libsml",
+        "rev": "559ca1e3ff8de7645fc4372f632e42b64cec780f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "volkszaehler",
+        "repo": "libsml",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1659446231,
+        "narHash": "sha256-hekabNdTdgR/iLsgce5TGWmfIDZ86qjPhxDg/8TlzhE=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "eabc38219184cc3e04a974fe31857d8e0eac098d",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "ref": "nixos-21.11",
+        "type": "indirect"
+      }
+    },
+    "root": {
+      "inputs": {
+        "libsml-src": "libsml-src",
+        "nixpkgs": "nixpkgs",
+        "vzlogger-src": "vzlogger-src"
+      }
+    },
+    "vzlogger-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1664375265,
+        "narHash": "sha256-hFwLtvk/pkGrx+h6CY4sCL7kBoyhKSzGmbD3ZSWIT94=",
+        "owner": "volkszaehler",
+        "repo": "vzlogger",
+        "rev": "27eb8d1566ec493d9cf64d2b53676c846ebb6e35",
+        "type": "github"
+      },
+      "original": {
+        "owner": "volkszaehler",
+        "repo": "vzlogger",
+        "type": "github"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
