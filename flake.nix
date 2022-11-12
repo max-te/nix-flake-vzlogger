@@ -64,6 +64,7 @@
               pkgs.openssl
             ];
             checkInputs = [ pkgs.gtest ];
+            cmakeFlags = [ "-DBUILD_TEST=off" ];
           };
           default = vzlogger;
         }
