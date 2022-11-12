@@ -5,27 +5,29 @@
     type = "github";
     owner = "volkszaehler";
     repo = "libsml";
+    rev = "559ca1e3ff8de7645fc4372f632e42b64cec780f";
     flake = false;
   };
   inputs.vzlogger-src = {
     type = "github";
     owner = "volkszaehler";
     repo = "vzlogger";
+    rev = "27eb8d1566ec493d9cf64d2b53676c846ebb6e35";
     flake = false;
   };
   outputs = { self, nixpkgs, libsml-src, vzlogger-src }:
-  let
-    version = builtins.substring 0 8 self.lastModifiedDate;
-    supportedSystems = ["x86_64-linux" "aarch64-linux"];
-    forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
-    nixpkgsFor = forAllSystems (system: import nixpkgs {inherit system;});
-  in
-  {
-    packages = forAllSystems (system:
-      let
-        pkgs = nixpkgsFor.${system};
-      in
-      rec {
+    let
+      version = builtins.substring 0 8 self.lastModifiedDate;
+      supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
+      forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
+      nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
+    in
+    {
+      packages = forAllSystems (system:
+        let
+          pkgs = nixpkgsFor.${system};
+        in
+        rec {
           libsml = pkgs.stdenv.mkDerivation {
             pname = "libsml";
             version = "1.0.0+${libsml-src.lastModifiedDate}";
@@ -41,14 +43,14 @@
             '';
           };
 
-          default = pkgs.stdenv.mkDerivation {
+          vzlogger = pkgs.stdenv.mkDerivation {
             pname = "vzlogger";
             version = "0.8.1+${vzlogger-src.lastModifiedDate}";
             src = vzlogger-src;
             nativeBuildInputs = [
               pkgs.cmake
             ];
-            buildInputs = [ 
+            buildInputs = [
               libsml
               pkgs.curl
               pkgs.cyrus_sasl
@@ -62,50 +64,54 @@
               pkgs.openssl
             ];
             checkInputs = [ pkgs.gtest ];
-            # cmakeFlags = [ "-DBUILD_TEST=off" ];
           };
-      }
-    );
-    apps = forAllSystems (system: {
-      default = {
-        type = "app";
-        program = "${self.packages.${system}.default}/bin/vzlogger";
-      };
-    });
-    defaultApp = forAllSystems (system: self.packages.${system}.default);
-    nixosModules.vzlogger = {config, lib, pkgs, ...}:
-      with lib;
-      let
-        cfg = config.services.vzlogger;
-        settingsFormat = pkgs.formats.json { };
-      in {
-        options.services.vzlogger = {
-          enable = mkEnableOption "Enables the vzlogger daemon";
-          configText = mkOption {
-            type = lib.types.submodule { freeformType = settingsFormat.type; };
-            default = { };
-            description = lib.mdDoc "Contents of the vzlogger.conf file.";
-          };
+          default = vzlogger;
+        }
+      );
+      apps = forAllSystems (system: rec {
+        vzlogger = {
+          type = "app";
+          program = "${self.packages.${system}.vzlogger}/bin/vzlogger";
         };
-        config = mkIf cfg.enable {
-          systemd.services.vzlogger = let
-            vzloggerConf = settingsFormat.generate "vzlogger.conf" cfg.configText;
-          in {
-            enable = true;
-            wantedBy = ["multi-user.target"];
-            after = ["network.target"];
-            serviceConfig = {
-              ExecStart = "${self.packages.${pkgs.system}.default}/bin/vzlogger -f" +
-                " -c ${vzloggerConf}";
-              ExecReload = "";
-              StandardOutput = "journal+console";
-              Restart = "on-failure";
-              RestartPreventExitStatus = 78;
-              StartLimitIntervalSec = 0;
-              RestartSec = 30;
+        default = vzlogger;
+      });
+      nixosModules.vzlogger = { config, lib, pkgs, ... }:
+        with lib;
+        let
+          cfg = config.services.vzlogger;
+          settingsFormat = pkgs.formats.json { };
+        in
+        {
+          options.services.vzlogger = {
+            enable = mkEnableOption "Enables the vzlogger daemon";
+            configText = mkOption {
+              type = lib.types.submodule { freeformType = settingsFormat.type; };
+              default = { };
+              description = lib.mdDoc "Contents of the vzlogger.conf file.";
             };
           };
+          config = mkIf cfg.enable {
+            systemd.services.vzlogger =
+              let
+                vzloggerConf = settingsFormat.generate "vzlogger.conf" cfg.configText;
+              in
+              {
+                enable = true;
+                wantedBy = [ "multi-user.target" ];
+                after = [ "network.target" ];
+                serviceConfig = {
+                  ExecStart = "${self.packages.${pkgs.system}.default}/bin/vzlogger -f" +
+                    " -c ${vzloggerConf}";
+                  ExecReload = "";
+                  StandardOutput = "journal+console";
+                  Restart = "on-failure";
+                  RestartPreventExitStatus = 78;
+                  StartLimitIntervalSec = 0;
+                  RestartSec = 30;
+                };
+              };
+          };
         };
-      };
-  };
+      nixosModules.default = self.nixosModules.vzlogger;
+    };
 }
