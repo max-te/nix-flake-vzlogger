@@ -21,62 +21,67 @@
       supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
       nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
+      libsml = forAllSystems
+        (system: nixpkgsFor.${system}.stdenv.mkDerivation {
+          pname = "libsml";
+          version = "1.0.0+${libsml-src.lastModifiedDate}";
+          src = libsml-src;
+          buildInputs = [ nixpkgsFor.${system}.libuuid ];
+          installPhase = ''
+            mkdir -p $out/{lib,include,lib/pkgconfig}
+
+            cp -v sml/lib/libsml.so.1 $out/lib/
+            ln -s libsml.so.1 $out/lib/libsml.so
+            cp -vR sml/include/sml $out/include/
+            cp -v sml.pc $out/lib/pkgconfig/
+          '';
+        });
     in
     {
-      packages = forAllSystems (system:
-        let
-          pkgs = nixpkgsFor.${system};
-        in
-        rec {
-          libsml = pkgs.stdenv.mkDerivation {
-            pname = "libsml";
-            version = "1.0.0+${libsml-src.lastModifiedDate}";
-            src = libsml-src;
-            buildInputs = [ pkgs.libuuid ];
-            installPhase = ''
-              mkdir -p $out/{lib,include,lib/pkgconfig}
-
-              cp -v sml/lib/libsml.so.1 $out/lib/
-              ln -s libsml.so.1 $out/lib/libsml.so
-              cp -vR sml/include/sml $out/include/
-              cp -v sml.pc $out/lib/pkgconfig/
-            '';
-          };
-
-          vzlogger = pkgs.stdenv.mkDerivation {
-            pname = "vzlogger";
-            version = "0.8.1+${vzlogger-src.lastModifiedDate}";
-            src = vzlogger-src;
-            nativeBuildInputs = [
-              pkgs.cmake
-            ];
-            buildInputs = [
-              libsml
-              pkgs.curl
-              pkgs.cyrus_sasl
-              pkgs.gnutls
-              pkgs.json_c
-              pkgs.libgcrypt
-              pkgs.libmicrohttpd
-              pkgs.libunistring
-              pkgs.libuuid
-              pkgs.mosquitto
-              pkgs.openssl
-            ];
-            checkInputs = [ pkgs.gtest ];
-            cmakeFlags = [ "-DBUILD_TEST=off" ];
-          };
-          default = vzlogger;
-        }
-      );
+      packages = forAllSystems
+        (system:
+          let
+            pkgs = nixpkgsFor.${system};
+          in
+          rec {
+            default = pkgs.stdenv.mkDerivation {
+              pname = "vzlogger";
+              version = "0.8.1+${vzlogger-src.lastModifiedDate}";
+              src = vzlogger-src;
+              nativeBuildInputs = [
+                pkgs.cmake
+              ];
+              buildInputs = [
+                libsml.${system}
+                pkgs.curl
+                pkgs.cyrus_sasl
+                pkgs.gnutls
+                pkgs.json_c
+                pkgs.libgcrypt
+                pkgs.libmicrohttpd
+                pkgs.libunistring
+                pkgs.libuuid
+                pkgs.mosquitto
+                pkgs.openssl
+                pkgs.git
+              ];
+              checkInputs = [ pkgs.gtest ];
+              cmakeFlags = [ "-DBUILD_TEST=off" ];
+            };
+            docker = pkgs.dockerTools.buildLayeredImage
+              {
+                name = "vzlogger";
+                config.Entrypoint = [ "${default}/bin/vzlogger" "-f" ];
+              };
+          }
+        );
       apps = forAllSystems (system: rec {
-        vzlogger = {
+        default = {
           type = "app";
-          program = "${self.packages.${system}.vzlogger}/bin/vzlogger";
+          program = "${self.packages.${system}.default}/bin/vzlogger";
         };
-        default = vzlogger;
       });
-      nixosModules.vzlogger = { config, lib, pkgs, ... }:
+      nixosModules.default = { config, lib, pkgs, ... }:
         with lib;
         let
           cfg = config.services.vzlogger;
@@ -113,6 +118,5 @@
               };
           };
         };
-      nixosModules.default = self.nixosModules.vzlogger;
     };
 }
