@@ -94,16 +94,19 @@
         {
           options.services.vzlogger = {
             enable = mkEnableOption "Enables the vzlogger daemon";
-            configText = mkOption {
+            settings = mkOption {
               type = lib.types.submodule { freeformType = settingsFormat.type; };
               default = { };
-              description = lib.mdDoc "Contents of the vzlogger.conf file.";
+              description = lib.mdDoc ''
+                vzlogger configuration. Refer to
+                <https://github.com/volkszaehler/vzlogger/tree/${libsml-src.rev}/etc> for examples.
+              '';
             };
           };
           config = mkIf cfg.enable {
             systemd.services.vzlogger =
               let
-                vzloggerConf = settingsFormat.generate "vzlogger.conf" cfg.configText;
+                vzloggerConf = settingsFormat.generate "vzlogger.conf" cfg.settings;
               in
               {
                 enable = true;
