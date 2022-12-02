@@ -1,7 +1,6 @@
 {
   description = "Volkszaehler logging utility for various meters & sensors";
   inputs.nixpkgs.url = "nixpkgs/nixos-22.11";
-  inputs.nixpkgs-docker.url = "nixpkgs/nixos-22.11";
   inputs.libsml-src = {
     type = "github";
     owner = "volkszaehler";
@@ -16,13 +15,12 @@
     rev = "ec7839332cdb94240b2e78111813dd73054fb69a";
     flake = false;
   };
-  outputs = { self, nixpkgs, nixpkgs-docker, libsml-src, vzlogger-src }:
+  outputs = { self, nixpkgs, libsml-src, vzlogger-src }:
     let
       version = builtins.substring 0 8 self.lastModifiedDate;
       supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
       nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
-      nixpkgsDockerFor = forAllSystems (system: import nixpkgs-docker { inherit system; });
       libsml = forAllSystems
         (system: nixpkgsFor.${system}.stdenv.mkDerivation {
           pname = "libsml";
@@ -44,7 +42,6 @@
         (system:
           let
             pkgs = nixpkgsFor.${system};
-            dockerTools = nixpkgsDockerFor.${system}.dockerTools;
           in
           rec {
             default = pkgs.stdenv.mkDerivation {
@@ -71,11 +68,11 @@
               checkInputs = [ pkgs.gtest ];
               cmakeFlags = [ "-DBUILD_TEST=off" ];
             };
-            docker = dockerTools.buildLayeredImage
+            docker = pkgs.dockerTools.buildLayeredImage
               {
                 name = "vzlogger";
                 config.Entrypoint = [ "${default}/bin/vzlogger" "-f" ];
-                contents = with dockerTools; [
+                contents = with pkgs.dockerTools; [
                   caCertificates
                   fakeNss
                 ];
