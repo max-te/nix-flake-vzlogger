@@ -1,6 +1,6 @@
 {
   description = "Volkszaehler logging utility for various meters & sensors";
-  inputs.nixpkgs.url = "nixpkgs/nixos-22.05";
+  inputs.nixpkgs.url = "nixpkgs/nixos-22.11";
   inputs.nixpkgs-docker.url = "nixpkgs/nixos-22.11";
   inputs.libsml-src = {
     type = "github";
@@ -11,9 +11,9 @@
   };
   inputs.vzlogger-src = {
     type = "github";
-    owner = "volkszaehler";
+    owner = "maxberger";
     repo = "vzlogger";
-    rev = "27eb8d1566ec493d9cf64d2b53676c846ebb6e35";
+    rev = "ec7839332cdb94240b2e78111813dd73054fb69a";
     flake = false;
   };
   outputs = { self, nixpkgs, nixpkgs-docker, libsml-src, vzlogger-src }:

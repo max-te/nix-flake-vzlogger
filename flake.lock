@@ -19,16 +19,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1669920164,
-        "narHash": "sha256-+3DM3bi/c/6MSCGDwAqqlpYHhOuKTL0bH7Xf4UmScdI=",
+        "lastModified": 1669834992,
+        "narHash": "sha256-YnhZGHgb4C3Q7DSGisO/stc50jFb9F/MzHeKS4giotg=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "97e88a936cf18bc8a2c6cf65e4ec8d423e4cb743",
+        "rev": "596a8e828c5dfa504f91918d0fa4152db3ab5502",
         "type": "github"
       },
       "original": {
         "id": "nixpkgs",
-        "ref": "nixos-22.05",
+        "ref": "nixos-22.11",
         "type": "indirect"
       }
     },
@@ -58,17 +58,17 @@
     "vzlogger-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1664375265,
-        "narHash": "sha256-hFwLtvk/pkGrx+h6CY4sCL7kBoyhKSzGmbD3ZSWIT94=",
-        "owner": "volkszaehler",
+        "lastModified": 1664133876,
+        "narHash": "sha256-XPuBQet8Gf4jciAq27zlZUgRoUJHGmexCAxSYJh7WqM=",
+        "owner": "maxberger",
         "repo": "vzlogger",
-        "rev": "27eb8d1566ec493d9cf64d2b53676c846ebb6e35",
+        "rev": "ec7839332cdb94240b2e78111813dd73054fb69a",
         "type": "github"
       },
       "original": {
-        "owner": "volkszaehler",
+        "owner": "maxberger",
         "repo": "vzlogger",
-        "rev": "27eb8d1566ec493d9cf64d2b53676c846ebb6e35",
+        "rev": "ec7839332cdb94240b2e78111813dd73054fb69a",
         "type": "github"
       }
     }
