@@ -3,17 +3,17 @@
     "libsml-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1644340481,
-        "narHash": "sha256-+saK98CURCZn7760S54yl0wWoyPFJb6wU0gQ3thnEZw=",
+        "lastModified": 1686628326,
+        "narHash": "sha256-X3ggAYjWa/Gf4stZNxbmRJwaEdiGtKp04gUxhw9XEJA=",
         "owner": "volkszaehler",
         "repo": "libsml",
-        "rev": "559ca1e3ff8de7645fc4372f632e42b64cec780f",
+        "rev": "262ac437eb16632eaf2a3621fb58dd8ffb95d4f5",
         "type": "github"
       },
       "original": {
         "owner": "volkszaehler",
         "repo": "libsml",
-        "rev": "559ca1e3ff8de7645fc4372f632e42b64cec780f",
+        "rev": "262ac437eb16632eaf2a3621fb58dd8ffb95d4f5",
         "type": "github"
       }
     },
@@ -42,17 +42,17 @@
     "vzlogger-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1664133876,
-        "narHash": "sha256-XPuBQet8Gf4jciAq27zlZUgRoUJHGmexCAxSYJh7WqM=",
+        "lastModified": 1684055430,
+        "narHash": "sha256-HfM1ufgBMczp7vnkxUEnO17URqOqIPxgSrFnKl3oEKk=",
         "owner": "maxberger",
         "repo": "vzlogger",
-        "rev": "ec7839332cdb94240b2e78111813dd73054fb69a",
+        "rev": "7d782e1f840e02631e1a0149f9ea4fe3cdc788ea",
         "type": "github"
       },
       "original": {
         "owner": "maxberger",
         "repo": "vzlogger",
-        "rev": "ec7839332cdb94240b2e78111813dd73054fb69a",
+        "rev": "7d782e1f840e02631e1a0149f9ea4fe3cdc788ea",
         "type": "github"
       }
     }
