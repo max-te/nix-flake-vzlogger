@@ -3,17 +3,17 @@
     "libsml-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1686628326,
-        "narHash": "sha256-X3ggAYjWa/Gf4stZNxbmRJwaEdiGtKp04gUxhw9XEJA=",
+        "lastModified": 1698753245,
+        "narHash": "sha256-o6tZ/BypT8UoBuXzkNLmhefXcjAOeQuGPnO/JUOXSBY=",
         "owner": "volkszaehler",
         "repo": "libsml",
-        "rev": "262ac437eb16632eaf2a3621fb58dd8ffb95d4f5",
+        "rev": "60bc464930bf9e821b17a4efaa46b197534876cf",
         "type": "github"
       },
       "original": {
         "owner": "volkszaehler",
         "repo": "libsml",
-        "rev": "262ac437eb16632eaf2a3621fb58dd8ffb95d4f5",
+        "rev": "60bc464930bf9e821b17a4efaa46b197534876cf",
         "type": "github"
       }
     },

@@ -5,7 +5,7 @@
     type = "github";
     owner = "volkszaehler";
     repo = "libsml";
-    rev = "262ac437eb16632eaf2a3621fb58dd8ffb95d4f5";
+    rev = "60bc464930bf9e821b17a4efaa46b197534876cf";
     flake = false;
   };
   inputs.vzlogger-src = {
@@ -24,7 +24,7 @@
       libsml = forAllSystems
         (system: nixpkgsFor.${system}.stdenv.mkDerivation {
           pname = "libsml";
-          version = "1.0.0+${libsml-src.lastModifiedDate}";
+          version = "1.1.1+${libsml-src.lastModifiedDate}";
           src = libsml-src;
           buildInputs = [ nixpkgsFor.${system}.libuuid ];
           installPhase = ''
