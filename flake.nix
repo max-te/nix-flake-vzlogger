@@ -17,14 +17,14 @@
   };
   outputs = { self, nixpkgs, libsml-src, vzlogger-src }:
     let
-      version = builtins.substring 0 8 self.lastModifiedDate;
       supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
       nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
+      libsmlVer = builtins.head (builtins.match ''.*Version: ([0-9.]+).*'' (builtins.readFile (libsml-src + "/sml.pc")));
       libsml = forAllSystems
         (system: nixpkgsFor.${system}.stdenv.mkDerivation {
           pname = "libsml";
-          version = "1.1.1+${libsml-src.lastModifiedDate}";
+          version = "${libsmlVer}+${libsml-src.lastModifiedDate}";
           src = libsml-src;
           buildInputs = [ nixpkgsFor.${system}.libuuid ];
           installPhase = ''
@@ -41,18 +41,24 @@
       packages = forAllSystems
         (system:
           let
+            vzloggerCMakeLists = builtins.readFile (vzlogger-src + "/CMakeLists.txt");
+            vzloggerMajorVer = builtins.head (builtins.match ''.*set\(VZLOGGER_MAJOR_VERSION ([0-9]+)\).*'' vzloggerCMakeLists);
+            vzloggerMinorVer = builtins.head (builtins.match ''.*set\(VZLOGGER_MINOR_VERSION ([0-9]+)\).*'' vzloggerCMakeLists);
+            vzloggerPatchVer = builtins.head (builtins.match ''.*set\(VZLOGGER_SUB_VERSION ([0-9]+)\).*'' vzloggerCMakeLists);
             pkgs = nixpkgsFor.${system};
+            systemLibsml = libsml.${system};
           in
           rec {
+            libsml = systemLibsml;
             default = pkgs.stdenv.mkDerivation {
               pname = "vzlogger";
-              version = "0.8.3+${vzlogger-src.lastModifiedDate}";
+              version = "${vzloggerMajorVer}.${vzloggerMinorVer}.${vzloggerPatchVer}+${vzlogger-src.lastModifiedDate}";
               src = vzlogger-src;
               nativeBuildInputs = [
                 pkgs.cmake
               ];
               buildInputs = [
-                libsml.${system}
+                systemLibsml
                 pkgs.curl
                 pkgs.cyrus_sasl
                 pkgs.gnutls
