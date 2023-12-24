@@ -10,9 +10,9 @@
   };
   inputs.vzlogger-src = {
     type = "github";
-    owner = "maxberger";
+    owner = "volkszaehler";
     repo = "vzlogger";
-    rev = "7d782e1f840e02631e1a0149f9ea4fe3cdc788ea";
+    rev = "5188375df5f0c3e261c60710aea0028eb53c1af5";
     flake = false;
   };
   outputs = { self, nixpkgs, libsml-src, vzlogger-src }:
@@ -46,7 +46,7 @@
           rec {
             default = pkgs.stdenv.mkDerivation {
               pname = "vzlogger";
-              version = "0.8.1+${vzlogger-src.lastModifiedDate}";
+              version = "0.8.3+${vzlogger-src.lastModifiedDate}";
               src = vzlogger-src;
               nativeBuildInputs = [
                 pkgs.cmake

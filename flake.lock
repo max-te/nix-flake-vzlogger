@@ -42,17 +42,17 @@
     "vzlogger-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1684055430,
-        "narHash": "sha256-HfM1ufgBMczp7vnkxUEnO17URqOqIPxgSrFnKl3oEKk=",
-        "owner": "maxberger",
+        "lastModified": 1703386516,
+        "narHash": "sha256-PGDVZ6pZsoXneafDmHUc7GBQCp+HsUzWyQOtq3WSl1g=",
+        "owner": "volkszaehler",
         "repo": "vzlogger",
-        "rev": "7d782e1f840e02631e1a0149f9ea4fe3cdc788ea",
+        "rev": "5188375df5f0c3e261c60710aea0028eb53c1af5",
         "type": "github"
       },
       "original": {
-        "owner": "maxberger",
+        "owner": "volkszaehler",
         "repo": "vzlogger",
-        "rev": "7d782e1f840e02631e1a0149f9ea4fe3cdc788ea",
+        "rev": "5188375df5f0c3e261c60710aea0028eb53c1af5",
         "type": "github"
       }
     }
