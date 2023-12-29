@@ -73,6 +73,12 @@
               ];
               checkInputs = [ pkgs.gtest ];
               cmakeFlags = [ "-DBUILD_TEST=off" ];
+              postPatch = ''
+                substituteInPlace src/gitSha1.cpp.in \
+                  --replace '@GIT_SHA1@' '${vzlogger-src.rev}' \
+                  --replace '@GIT_SHALONG@' '${vzlogger-src.rev}' \
+                  --replace '@GIT_LAST_COMMIT_DATE@' '${vzlogger-src.lastModifiedDate}'
+              '';
             };
             docker = pkgs.dockerTools.buildLayeredImage
               {
@@ -133,3 +139,4 @@
         };
     };
 }
+
