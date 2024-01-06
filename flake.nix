@@ -1,6 +1,6 @@
 {
   description = "Volkszaehler logging utility for various meters & sensors";
-  inputs.nixpkgs.url = "nixpkgs/nixos-23.05";
+  inputs.nixpkgs.url = "nixpkgs/nixos-unstable";
   inputs.libsml-src = {
     type = "github";
     owner = "volkszaehler";
@@ -71,6 +71,7 @@
                 pkgs.openssl
                 pkgs.git
               ];
+              hardeningDisable = [ "fortify" ];
               checkInputs = [ pkgs.gtest ];
               cmakeFlags = [ "-DBUILD_TEST=off" ];
               postPatch = ''
