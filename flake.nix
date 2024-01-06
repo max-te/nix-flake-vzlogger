@@ -5,14 +5,14 @@
     type = "github";
     owner = "volkszaehler";
     repo = "libsml";
-    rev = "60bc464930bf9e821b17a4efaa46b197534876cf";
+    rev = "6cfe29613d07e1878461e17837cc8ad5b56c8480";
     flake = false;
   };
   inputs.vzlogger-src = {
     type = "github";
     owner = "volkszaehler";
     repo = "vzlogger";
-    rev = "5188375df5f0c3e261c60710aea0028eb53c1af5";
+    rev = "5360c08fca731c0065ce2c4b02b1cbdab6d55e16";
     flake = false;
   };
   outputs = { self, nixpkgs, libsml-src, vzlogger-src }:
